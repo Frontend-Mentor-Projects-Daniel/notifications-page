@@ -1,0 +1,19 @@
+{
+  "name": "notifications-page",
+  "version": "1.0.0",
+  "description": "![Design preview for the Notifications page coding challenge](./design/desktop-preview.jpg)",
+  "main": "index.js",
+  "scripts": {
+    "serve": "elm-live src/elm/Main.elm --start-page=index.html -- --output=src/js/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frontend-Mentor-Projects-Daniel/notifications-page.git"
+  },
+  "author": "Daniel Arzanipour",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Frontend-Mentor-Projects-Daniel/notifications-page/issues"
+  },
+  "homepage": "https://github.com/Frontend-Mentor-Projects-Daniel/notifications-page#readme"
+}
