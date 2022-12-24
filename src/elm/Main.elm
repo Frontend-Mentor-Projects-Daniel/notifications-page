@@ -22,7 +22,7 @@ type alias Model =
 
 init : Model
 init =
-    { placeHolderValue = "Hello World!"
+    { placeHolderValue = ""
     }
 
 
@@ -47,9 +47,4 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div [ id "root" ]
-        [ header []
-            [ h1 [] [ text "Hello World!" ]
-            ]
-        , main_ [] []
-        ]
+    div [ id "root" ] []

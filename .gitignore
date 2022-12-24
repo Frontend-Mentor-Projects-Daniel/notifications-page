@@ -16,6 +16,7 @@ style-guide.md
 src/**/output
 /.vscode
 /design
+/src/assets/fonts3
 
 # Local Netlify folder
 .netlify

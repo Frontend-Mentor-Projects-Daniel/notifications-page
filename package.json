@@ -4,7 +4,7 @@
   "description": "![Design preview for the Notifications page coding challenge](./design/desktop-preview.jpg)",
   "main": "index.js",
   "scripts": {
-    "serve": "elm-live src/elm/Main.elm --start-page=index.html -- --output=src/js/index.js"
+    "start": "elm-live src/elm/Main.elm --start-page=index.html -- --output=src/js/index.js"
   },
   "repository": {
     "type": "git",

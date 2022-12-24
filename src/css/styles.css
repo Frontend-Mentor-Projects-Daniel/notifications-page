@@ -1,0 +1,197 @@
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Allow percentage-based heights in the application */
+html,
+body {
+  height: 100%;
+}
+/*
+ Add accessible line-height Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+/* Create a root stacking context */
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/* FONTS */
+/* plus-jakarta-sans-regular - latin */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+    url('../assets/fonts/plus-jakarta-sans-v3-latin-regular.woff2')
+      format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('../assets/fonts/plus-jakarta-sans-v3-latin-regular.woff')
+      format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* plus-jakarta-sans-500 - latin */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: local(''),
+    url('../assets/fonts/plus-jakarta-sans-v3-latin-500.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('../assets/fonts/plus-jakarta-sans-v3-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* plus-jakarta-sans-800 - latin */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: local(''),
+    url('../assets/fonts/plus-jakarta-sans-v3-latin-800.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('../assets/fonts/plus-jakarta-sans-v3-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/* GLOBAL STYLES */
+:root {
+  /* COLOURS */
+  /* color: hsl(hue, saturation, lightness); */
+  --hue: 1;
+  --saturation: 90%;
+  --lightness: 64%;
+
+  /* primary */
+  --clr-red: var(--hue), var(--saturation), var(--lightness);
+  /* accent */
+  --clr-blue: calc(var(--hue) + 218), calc(var(--saturation) - 5%),
+    calc(var(--lightness) - 38%);
+
+  /* neutral */
+  --clr-white: 0, 0%, 100%;
+
+  /* grays */
+  --clr-grayish-blue-100: 216, 19%, 84%;
+  --clr-grayish-blue-200: 217, 16%, 74%;
+  --clr-grayish-blue-300: 218, 14%, 63%;
+  --clr-grayish-blue-400: 218, 14%, 55%;
+  --clr-grayish-blue-500: 217, 15%, 47%;
+  --clr-grayish-blue-600: 216, 16%, 41%;
+  --clr-grayish-blue-700: 218, 16%, 34%;
+  --clr-grayish-blue-800: 218, 16%, 26%;
+  --clr-grayish-blue-900: 218, 17%, 18%;
+
+  /* FONT FAMILIES */
+  --ff-outfit: 'Outfit', sans-serif;
+
+  /* FONT WEIGHTS */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-very-bold: 800;
+}
+
+body {
+  background-color: hsla(225, 50%, 98%, 1);
+  color: var(--clr-grayish-blue-300);
+  font-family: var(--ff-outfit);
+  font-size: 0.875rem;
+  font-weight: var(--fw-medium);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: hsl(var(--clr-grayish-blue-900));
+  font-weight: var(--fw-very-bold);
+}
