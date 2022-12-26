@@ -1,22 +1,28 @@
 module Main exposing (..)
 
+-- import Css exposing (..)
+-- import Css.Global exposing (media)
+-- import Css.Media
+-- import Html.Styled exposing (..)
+-- import Html.Styled.Attributes exposing (..)
+-- import Html.Styled.Attributes.Aria exposing (..)
+-- import Html.Styled.Events exposing (onClick, onInput, onSubmit)
+-- import Svg.Styled.Attributes exposing (textAnchor)
+
 import Browser
-import Css exposing (..)
-import Css.Global exposing (media)
-import Css.Media
-import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (..)
-import Html.Styled.Attributes.Aria exposing (..)
-import Html.Styled.Events exposing (onClick, onInput, onSubmit)
-import Svg.Styled.Attributes exposing (textAnchor)
+import Html exposing (..)
+import Html.Attributes exposing (alt, class, datetime, href, id, src)
+import Html.Attributes.Aria exposing (ariaDescribedby, ariaLive, role)
+import Html.Events exposing (onClick)
 
 
 main : Program () Model Msg
 main =
-    Browser.sandbox { init = init, update = update, view = view >> Html.Styled.toUnstyled }
+    Browser.sandbox { init = init, update = update, view = view }
 
 
 
+-- Browser.sandbox { init = init, update = update, view = view >> Html.Styled.toUnstyled }
 -- MODEL
 
 
@@ -32,7 +38,7 @@ type alias Model =
 init : Model
 init =
     { hasRead = True
-    , unReadMessages = 0
+    , unReadMessages = 5
     , isPrivateMessage = False
     , isComment = False
     , notifications = 0
@@ -63,13 +69,35 @@ view model =
     div [ id "root" ]
         [ header [ class "header center" ]
             [ h1 [] [ text "Notifications" ]
-            , span [ role "status", ariaLive "polite" ] [ text (String.fromInt model.unReadMessages) ]
+            , span [ role "status", ariaLive "polite" ]
+                [ text (String.fromInt model.unReadMessages)
+                , span [ class "sr-only" ] [ text " new notifications" ]
+                ]
             , button [ onClick MarkAllAsRead ] [ text "Mark all as read" ]
             ]
-        , main_ [ class "main center" ] []
+        , main_ [ class "main center" ]
+            [ div [ class "card reaction" ]
+                [ div [ class "image-wrapper" ]
+                    [ img [ src "./src/assets/images/avatar-mark-webber.webp", alt "profile image", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+                    ]
+                , div [ class "text-wrapper" ]
+                    [ p []
+                        [ span [ class "username" ] [ text "Mark Webber " ]
+                        , text "reacted to your recent post "
+                        , span [ class "event" ] [ text "My first tournament today!" ]
+                        ]
+
+                    -- , div [ class "red-dot" ] []
+                    , time [ datetime "2022 09 23" ] [ text "1m ago" ]
+                    ]
+                ]
+
+            -- , div [ class "card private-message" ] []
+            -- , div [ class "card comment" ] []
+            ]
         , footer [ class "footer attribution center" ]
             [ text "Challenge by"
-            , a [ href "https://www.frontendmentor.io?ref=challenge", Html.Styled.Attributes.target "_blank" ] [ text " Frontend Mentor. " ]
+            , a [ href "https://www.frontendmentor.io?ref=challenge", Html.Attributes.target "_blank" ] [ text " Frontend Mentor. " ]
             , text "Coded by "
             , a [ href "#" ] [ text "Daniel Arzanipour" ]
             ]

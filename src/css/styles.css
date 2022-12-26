@@ -135,6 +135,16 @@ h6 {
     /* Chrome 26+, Opera 23+, Firefox 39+ */
       url('../assets/fonts/plus-jakarta-sans-v3-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
+/* plus-jakarta-sans-700 - latin */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+    url('../assets/fonts/plus-jakarta-sans-v3-latin-700.woff2') format('woff2'),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url('../assets/fonts/plus-jakarta-sans-v3-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 
 /* plus-jakarta-sans-800 - latin */
 @font-face {
@@ -183,12 +193,13 @@ h6 {
   /* FONT WEIGHTS */
   --fw-regular: 400;
   --fw-medium: 500;
+  --fw-bold: 700;
   --fw-very-bold: 800;
 }
 
 body {
   background-color: hsla(225, 50%, 98%, 1);
-  color: var(--clr-grayish-blue-300);
+  color: hsl(var(--clr-grayish-blue-600));
   font-family: var(--ff-plus-jakarta-sans);
   font-size: 0.875rem;
   font-weight: var(--fw-medium);
@@ -301,7 +312,83 @@ h6 {
 
 /* MAIN */
 .main {
+  margin-block-start: 24px;
+  padding-inline: 16px;
 }
+
+@media (min-width: 34.375rem) {
+  .main {
+    margin-block-start: 31px;
+  }
+}
+
+/* CARDS */
+
+/* reaction card */
+.card.reaction {
+  display: flex;
+  gap: 13px;
+
+  background-color: hsl(var(--clr-blue), 0.05);
+  border-radius: 8px;
+  padding: 16px;
+  padding-inline-end: 24px;
+}
+
+.card.reaction .image-wrapper {
+  flex-shrink: 0;
+}
+
+.card.reaction .text-wrapper {
+  font-size: 0.875rem;
+  position: relative;
+}
+
+.card.reaction .text-wrapper p::after {
+  position: absolute;
+  transform: translate(75%, 85%);
+
+  content: '';
+  background-color: hsl(var(--clr-red));
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.card.reaction .username {
+  color: hsl(var(--clr-grayish-blue-900));
+  font-weight: var(--fw-very-bold);
+}
+
+.card.reaction .event {
+  color: hsl(var(--clr-grayish-blue-700));
+  font-weight: var(--fw-bold);
+}
+
+.card.reaction .red-dot {
+  background-color: hsl(var(--clr-red));
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.card.reaction time {
+  color: hsl(var(--clr-grayish-blue-600), 0.95);
+}
+
+@media (min-width: 34.375rem) {
+  .card.reaction {
+    gap: 19px;
+  }
+
+  .card.reaction .text-wrapper {
+    font-size: 1rem;
+  }
+}
+
+/* private message card */
+
+/* comment card */
 
 /* FOOTER */
 .footer {
