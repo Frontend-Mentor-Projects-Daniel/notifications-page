@@ -44,31 +44,27 @@ init =
 
 
 type Msg
-    = DoNothing
-    | DoSomething
+    = MarkAllAsRead
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        DoNothing ->
-            model
-
-        DoSomething ->
-            model
+        MarkAllAsRead ->
+            { model | unReadMessages = 0 }
 
 
 
 -- VIEW
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     div [ id "root" ]
         [ header [ class "header center" ]
             [ h1 [] [ text "Notifications" ]
-            , span [ role "status", ariaLive "polite" ] [ text "3" ]
-            , button [] [ text "Mark all as read" ]
+            , span [ role "status", ariaLive "polite" ] [ text (String.fromInt model.unReadMessages) ]
+            , button [ onClick MarkAllAsRead ] [ text "Mark all as read" ]
             ]
         , main_ [ class "main center" ] []
         , footer [ class "footer attribution center" ]

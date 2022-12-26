@@ -6111,12 +6111,11 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'DoNothing') {
-			return model;
-		} else {
-			return model;
-		}
+		return _Utils_update(
+			model,
+			{unReadMessages: 0});
 	});
+var $author$project$Main$MarkAllAsRead = {$: 'MarkAllAsRead'};
 var $rtfeldman$elm_css$VirtualDom$Styled$Node = F3(
 	function (a, b, c) {
 		return {$: 'Node', a: a, b: b, c: c};
@@ -6164,6 +6163,31 @@ var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
 };
 var $rtfeldman$elm_css$Html$Styled$Attributes$id = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('id');
 var $rtfeldman$elm_css$Html$Styled$main_ = $rtfeldman$elm_css$Html$Styled$node('main');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
+	function (eventName, handler) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$on, eventName, handler),
+			false,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $dzuk_mutant$elm_html_styled_aria$Html$Styled$Attributes$Aria$role = $rtfeldman$elm_css$Html$Styled$Attributes$attribute('role');
 var $rtfeldman$elm_css$Html$Styled$span = $rtfeldman$elm_css$Html$Styled$node('span');
 var $rtfeldman$elm_css$Html$Styled$Attributes$target = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('target');
@@ -6208,11 +6232,15 @@ var $author$project$Main$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$rtfeldman$elm_css$Html$Styled$text('3')
+								$rtfeldman$elm_css$Html$Styled$text(
+								$elm$core$String$fromInt(model.unReadMessages))
 							])),
 						A2(
 						$rtfeldman$elm_css$Html$Styled$button,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Main$MarkAllAsRead)
+							]),
 						_List_fromArray(
 							[
 								$rtfeldman$elm_css$Html$Styled$text('Mark all as read')
