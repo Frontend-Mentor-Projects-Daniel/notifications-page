@@ -78,7 +78,8 @@ select {
 
 /* Allow percentage-based heights in the application */
 html,
-body {
+body,
+#root {
   height: 100%;
 }
 /*
@@ -170,7 +171,7 @@ h6 {
   --clr-grayish-blue-900: 218, 17%, 18%;
 
   /* FONT FAMILIES */
-  --ff-outfit: 'Outfit', sans-serif;
+  --ff-plus-jakarta-sans: 'Plus Jakarta Sans', sans-serif;
 
   /* FONT WEIGHTS */
   --fw-regular: 400;
@@ -181,7 +182,7 @@ h6 {
 body {
   background-color: hsla(225, 50%, 98%, 1);
   color: var(--clr-grayish-blue-300);
-  font-family: var(--ff-outfit);
+  font-family: var(--ff-plus-jakarta-sans);
   font-size: 0.875rem;
   font-weight: var(--fw-medium);
 }
@@ -194,4 +195,33 @@ h5,
 h6 {
   color: hsl(var(--clr-grayish-blue-900));
   font-weight: var(--fw-very-bold);
+}
+
+/* UTILITIES */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.center {
+  --measure: 730px;
+
+  box-sizing: content-box;
+  margin-inline: auto;
+  max-inline-size: var(--measure);
+
+  /* in order to push the footer to the bottom, the header was squished, this is a fix for that */
+  min-width: min(var(--measure), calc(100% - 32px));
+}
+
+/* elm-css doesn't seem to have a gap function so I'm creating the classes here and using them */
+.flex-gap-9px {
+  gap: 9px;
 }

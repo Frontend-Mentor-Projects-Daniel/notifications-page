@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Frontend-Mentor-Projects-Daniel/notifications-page/issues"
   },
-  "homepage": "https://github.com/Frontend-Mentor-Projects-Daniel/notifications-page#readme"
+  "homepage": "https://github.com/Frontend-Mentor-Projects-Daniel/notifications-page#readme",
+  "dependencies": {
+    "elm-live": "^4.0.2"
+  }
 }
