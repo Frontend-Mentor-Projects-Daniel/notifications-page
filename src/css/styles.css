@@ -1,3 +1,6 @@
+/***************
+     RESET 
+***************/
 /* Box sizing rules */
 *,
 *::before,
@@ -106,7 +109,9 @@ h6 {
   isolation: isolate;
 }
 
-/* FONTS */
+/***************
+     FONTS 
+***************/
 /* plus-jakarta-sans-regular - latin */
 @font-face {
   font-family: 'Plus Jakarta Sans';
@@ -142,7 +147,9 @@ h6 {
       url('../assets/fonts/plus-jakarta-sans-v3-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
-/* GLOBAL STYLES */
+/*****************
+  GLOBAL STYLES
+*****************/
 :root {
   /* COLOURS */
   /* color: hsl(hue, saturation, lightness); */
@@ -197,7 +204,23 @@ h6 {
   font-weight: var(--fw-very-bold);
 }
 
-/* UTILITIES */
+/***************
+  COMPOSITIONS 
+***************/
+.center {
+  --measure: 730px;
+
+  box-sizing: content-box;
+  margin-inline: auto;
+  max-inline-size: var(--measure);
+
+  /* In order to push the footer to the bottom, the header was squished, this is a fix for that */
+  min-width: min(var(--measure), calc(100% - 32px));
+}
+
+/***************
+    UTILITIES 
+***************/
 .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -210,18 +233,81 @@ h6 {
   border: 0 !important;
 }
 
-.center {
-  --measure: 730px;
+/***************
+    BLOCKS 
+***************/
 
-  box-sizing: content-box;
-  margin-inline: auto;
-  max-inline-size: var(--measure);
-
-  /* in order to push the footer to the bottom, the header was squished, this is a fix for that */
-  min-width: min(var(--measure), calc(100% - 32px));
+/* ROOT */
+#root {
+  display: flex;
+  flex-direction: column;
 }
 
-/* elm-css doesn't seem to have a gap function so I'm creating the classes here and using them */
-.flex-gap-9px {
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
   gap: 9px;
+
+  margin-block-start: 24px;
 }
+
+.header h1 {
+  color: hsl(var(--clr-grayish-blue-900));
+  font-size: 1.25rem;
+}
+
+.header span {
+  background-color: hsl(var(--clr-blue));
+  border-radius: 6px;
+  color: hsl(var(--clr-white));
+  font-size: 1rem;
+  font-weight: var(--fw-very-bold);
+  padding: 4px 11px;
+}
+
+.header button {
+  background-color: transparent;
+  border: none;
+  color: hsl(var(--clr-grayish-blue-600));
+  cursor: pointer;
+  margin-inline-start: auto;
+  transition: color 250ms;
+  /* ease */
+  transition-timing-function: cubic-bezier(0.44, 0.21, 0, 1);
+}
+
+.header button:hover {
+  color: hsl(var(--clr-grayish-blue-900));
+}
+
+/* for extra-small screen sizes */
+@media (max-width: 17.375rem) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header button {
+    margin-inline-start: 0;
+  }
+}
+
+@media (min-width: 34.375rem) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* MAIN */
+.main {
+}
+
+/* FOOTER */
+.footer {
+  margin-block-start: auto;
+}
+
+/***************
+   EXCEPTIONS 
+***************/
