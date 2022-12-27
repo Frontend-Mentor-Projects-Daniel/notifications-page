@@ -38,7 +38,7 @@ type alias Model =
 init : Model
 init =
     { hasRead = True
-    , unReadMessages = 0
+    , unReadMessages = 5
     , isPrivateMessage = False
     , isComment = False
     , notifications = 0

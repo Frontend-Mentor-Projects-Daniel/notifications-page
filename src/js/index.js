@@ -4372,7 +4372,7 @@ function _Browser_load(url)
 }
 var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$True = {$: 'True'};
-var $author$project$Main$init = {hasRead: true, isComment: false, isPrivateMessage: false, notifications: 0, unReadMessages: 0};
+var $author$project$Main$init = {hasRead: true, isComment: false, isPrivateMessage: false, notifications: 0, unReadMessages: 5};
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
