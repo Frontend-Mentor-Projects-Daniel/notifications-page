@@ -2,7 +2,7 @@
   {
     "profileImage": "./src/assets/images/avatar-mark-webber.webp",
     "userName": "Mark Webber",
-    "type": "reacted to your recent post",
+    "type_": "reacted to your recent post",
     "event": "My first tournament today",
     "date": "1m ago",
     "privateMessage": "",
@@ -11,7 +11,7 @@
   {
     "profileImage": "./src/assets/images/avatar-angela-gray.webp",
     "userName": "Angela Gray",
-    "type": "followed you",
+    "type_": "followed you",
     "event": "",
     "date": "5m ago",
     "privateMessage": "",
@@ -20,7 +20,7 @@
   {
     "profileImage": "./src/assets/images/avatar-jacob-thompson.webp",
     "userName": "Jacob Thompson",
-    "type": "has joined your group",
+    "type_": "has joined your group",
     "event": "Chess Club",
     "date": "1 day ago",
     "privateMessage": "",
@@ -29,7 +29,7 @@
   {
     "profileImage": "./src/assets/images/avatar-rizky-hasanuddin.webp",
     "userName": "Rizky Hasanuddin",
-    "type": "sent you a private message",
+    "type_": "sent you a private message",
     "event": "",
     "date": "1m ago",
     "privateMessage": "Hello, thanks for setting up the Chess Club. I’ve been a member for a ,few weeks now and I’m already having lots of fun and improving my game.",
@@ -38,7 +38,7 @@
   {
     "profileImage": "./src/assets/images/avatar-kimberly-smith.webp",
     "userName": "Kimberly Smith",
-    "type": "commented on your picture",
+    "type_": "commented on your picture",
     "event": "",
     "date": "1 week ago",
     "privateMessage": "",
@@ -47,7 +47,7 @@
   {
     "profileImage": "./src/assets/images/avatar-nathan-peterson.webp",
     "userName": "Nathan Peterson",
-    "type": "reacted to your recent post",
+    "type_": "reacted to your recent post",
     "event": "5 end-game strategies to increase your win rate",
     "date": "2 weeks ago",
     "privateMessage": "",
@@ -56,7 +56,7 @@
   {
     "profileImage": "./src/assets/images/avatar-anna-kim.webp",
     "userName": "Anna Kim",
-    "type": "left the group",
+    "type_": "left the group",
     "event": "Chess Club",
     "date": "2 weeks ago",
     "privateMessage": "",

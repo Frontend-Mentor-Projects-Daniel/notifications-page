@@ -76,7 +76,7 @@ view model =
             , button [ onClick MarkAllAsRead ] [ text "Mark all as read" ]
             ]
         , main_ [ class "main center stack" ]
-            [ cardReactionTemplate {}
+            [ cardReactionTemplate tempData
 
             -- , div [ class "card private-message" ] []
             -- , div [ class "card comment" ] []
@@ -95,18 +95,41 @@ view model =
 -- .card.reaction template
 
 
-cardReactionTemplate obj =
+tempData =
+    { profileImage = "./src/assets/images/avatar-mark-webber.webp"
+    , userName = "Mark Webber"
+    , type_ = "reacted to your recent post"
+    , event = "My first tournament today"
+    , date = "1m ago"
+    , privateMessage = ""
+    , otherPicture = ""
+    }
+
+
+type alias ReactionCard =
+    { profileImage : String
+    , userName : String
+    , type_ : String
+    , event : String
+    , date : String
+    , privateMessage : String
+    , otherPicture : String
+    }
+
+
+cardReactionTemplate : ReactionCard -> Html msg
+cardReactionTemplate card =
     div [ class "card reaction" ]
         [ div [ class "image-wrapper" ]
-            [ img [ src "./src/assets/images/avatar-mark-webber.webp", alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
         , div [ class "text-wrapper" ]
             [ p []
-                [ span [ class "username" ] [ text "Mark Webber " ]
-                , text "reacted to your recent post "
-                , span [ class "event" ] [ text "My first tournament today!" ]
+                [ span [ class "username" ] [ text (card.userName ++ " ") ]
+                , text (card.type_ ++ " ")
+                , span [ class "event" ] [ text card.event ]
                 ]
-            , time [ datetime "2022 09 23" ] [ text "1m ago" ]
+            , time [ datetime "1994 09 23" ] [ text card.date ]
             ]
         ]
 

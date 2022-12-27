@@ -5235,7 +5235,7 @@ var $elm$html$Html$Attributes$width = function (n) {
 		'width',
 		$elm$core$String$fromInt(n));
 };
-var $author$project$Main$cardReactionTemplate = function (obj) {
+var $author$project$Main$cardReactionTemplate = function (card) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5256,7 +5256,7 @@ var $author$project$Main$cardReactionTemplate = function (obj) {
 						$elm$html$Html$img,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$src('./src/assets/images/avatar-mark-webber.webp'),
+								$elm$html$Html$Attributes$src(card.profileImage),
 								$elm$html$Html$Attributes$alt('user profile'),
 								$elm$html$Html$Attributes$height(45),
 								$elm$html$Html$Attributes$width(45)
@@ -5284,9 +5284,9 @@ var $author$project$Main$cardReactionTemplate = function (obj) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('Mark Webber ')
+										$elm$html$Html$text(card.userName + ' ')
 									])),
-								$elm$html$Html$text('reacted to your recent post '),
+								$elm$html$Html$text(card.type_ + ' '),
 								A2(
 								$elm$html$Html$span,
 								_List_fromArray(
@@ -5295,18 +5295,18 @@ var $author$project$Main$cardReactionTemplate = function (obj) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text('My first tournament today!')
+										$elm$html$Html$text(card.event)
 									]))
 							])),
 						A2(
 						$elm$html$Html$time,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$datetime('2022 09 23')
+								$elm$html$Html$Attributes$datetime('1994 09 23')
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('1m ago')
+								$elm$html$Html$text(card.date)
 							]))
 					]))
 			]));
@@ -5341,6 +5341,7 @@ var $elm$html$Html$Events$onClick = function (msg) {
 };
 var $fapian$elm_html_aria$Html$Attributes$Aria$role = $elm$html$Html$Attributes$attribute('role');
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
+var $author$project$Main$tempData = {date: '1m ago', event: 'My first tournament today', otherPicture: '', privateMessage: '', profileImage: './src/assets/images/avatar-mark-webber.webp', type_: 'reacted to your recent post', userName: 'Mark Webber'};
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5406,8 +5407,7 @@ var $author$project$Main$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Main$cardReactionTemplate(
-						{})
+						$author$project$Main$cardReactionTemplate($author$project$Main$tempData)
 					])),
 				A2(
 				$elm$html$Html$footer,

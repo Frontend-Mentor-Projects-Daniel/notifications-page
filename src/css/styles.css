@@ -393,6 +393,7 @@ h6 {
 .card.reaction .event {
   color: hsl(var(--clr-grayish-blue-700));
   font-weight: var(--fw-bold);
+  margin-inline-start: 3px;
 }
 
 .card.reaction .red-dot {
