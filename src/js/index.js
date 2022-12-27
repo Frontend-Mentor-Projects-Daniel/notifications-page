@@ -4372,7 +4372,7 @@ function _Browser_load(url)
 }
 var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$True = {$: 'True'};
-var $author$project$Main$init = {hasRead: true, isComment: false, isPrivateMessage: false, notifications: 0, unReadMessages: 5};
+var $author$project$Main$init = {hasRead: true, isComment: false, isPrivateMessage: false, notifications: 0, unReadMessages: 0};
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
@@ -5189,15 +5189,6 @@ var $author$project$Main$update = F2(
 	});
 var $author$project$Main$MarkAllAsRead = {$: 'MarkAllAsRead'};
 var $elm$html$Html$a = _VirtualDom_node('a');
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -5208,18 +5199,121 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $fapian$elm_html_aria$Html$Attributes$Aria$ariaLive = $elm$html$Html$Attributes$attribute('aria-live');
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$Attributes$datetime = _VirtualDom_attribute('datetime');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$footer = _VirtualDom_node('footer');
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$height = function (n) {
 	return A2(
 		_VirtualDom_attribute,
 		'height',
 		$elm$core$String$fromInt(n));
 };
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$html$Html$span = _VirtualDom_node('span');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$time = _VirtualDom_node('time');
+var $elm$html$Html$Attributes$width = function (n) {
+	return A2(
+		_VirtualDom_attribute,
+		'width',
+		$elm$core$String$fromInt(n));
+};
+var $author$project$Main$cardReactionTemplate = function (obj) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('card reaction')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('image-wrapper')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src('./src/assets/images/avatar-mark-webber.webp'),
+								$elm$html$Html$Attributes$alt('user profile'),
+								$elm$html$Html$Attributes$height(45),
+								$elm$html$Html$Attributes$width(45)
+							]),
+						_List_Nil)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('text-wrapper')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('username')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Mark Webber ')
+									])),
+								$elm$html$Html$text('reacted to your recent post '),
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('event')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('My first tournament today!')
+									]))
+							])),
+						A2(
+						$elm$html$Html$time,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$datetime('2022 09 23')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('1m ago')
+							]))
+					]))
+			]));
+};
+var $elm$html$Html$footer = _VirtualDom_node('footer');
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
@@ -5227,7 +5321,6 @@ var $elm$html$Html$Attributes$href = function (url) {
 		_VirtualDom_noJavaScriptUri(url));
 };
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
-var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -5246,25 +5339,8 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $elm$html$Html$p = _VirtualDom_node('p');
 var $fapian$elm_html_aria$Html$Attributes$Aria$role = $elm$html$Html$Attributes$attribute('role');
-var $elm$html$Html$span = _VirtualDom_node('span');
-var $elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$html$Html$time = _VirtualDom_node('time');
-var $elm$html$Html$Attributes$width = function (n) {
-	return A2(
-		_VirtualDom_attribute,
-		'width',
-		$elm$core$String$fromInt(n));
-};
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5326,84 +5402,12 @@ var $author$project$Main$view = function (model) {
 				$elm$html$Html$main_,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('main center')
+						$elm$html$Html$Attributes$class('main center stack')
 					]),
 				_List_fromArray(
 					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('card reaction')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('image-wrapper')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$img,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$src('./src/assets/images/avatar-mark-webber.webp'),
-												$elm$html$Html$Attributes$alt('profile image'),
-												$elm$html$Html$Attributes$height(45),
-												$elm$html$Html$Attributes$width(45)
-											]),
-										_List_Nil)
-									])),
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('text-wrapper')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$p,
-										_List_Nil,
-										_List_fromArray(
-											[
-												A2(
-												$elm$html$Html$span,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('username')
-													]),
-												_List_fromArray(
-													[
-														$elm$html$Html$text('Mark Webber ')
-													])),
-												$elm$html$Html$text('reacted to your recent post '),
-												A2(
-												$elm$html$Html$span,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('event')
-													]),
-												_List_fromArray(
-													[
-														$elm$html$Html$text('My first tournament today!')
-													]))
-											])),
-										A2(
-										$elm$html$Html$time,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$datetime('2022 09 23')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('1m ago')
-											]))
-									]))
-							]))
+						$author$project$Main$cardReactionTemplate(
+						{})
 					])),
 				A2(
 				$elm$html$Html$footer,

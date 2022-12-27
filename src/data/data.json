@@ -1,0 +1,65 @@
+[
+  {
+    "profileImage": "./src/assets/images/avatar-mark-webber.webp",
+    "userName": "Mark Webber",
+    "type": "reacted to your recent post",
+    "event": "My first tournament today",
+    "date": "1m ago",
+    "privateMessage": "",
+    "otherPicture": ""
+  },
+  {
+    "profileImage": "./src/assets/images/avatar-angela-gray.webp",
+    "userName": "Angela Gray",
+    "type": "followed you",
+    "event": "",
+    "date": "5m ago",
+    "privateMessage": "",
+    "otherPicture": ""
+  },
+  {
+    "profileImage": "./src/assets/images/avatar-jacob-thompson.webp",
+    "userName": "Jacob Thompson",
+    "type": "has joined your group",
+    "event": "Chess Club",
+    "date": "1 day ago",
+    "privateMessage": "",
+    "otherPicture": ""
+  },
+  {
+    "profileImage": "./src/assets/images/avatar-rizky-hasanuddin.webp",
+    "userName": "Rizky Hasanuddin",
+    "type": "sent you a private message",
+    "event": "",
+    "date": "1m ago",
+    "privateMessage": "Hello, thanks for setting up the Chess Club. I’ve been a member for a ,few weeks now and I’m already having lots of fun and improving my game.",
+    "otherPicture": ""
+  },
+  {
+    "profileImage": "./src/assets/images/avatar-kimberly-smith.webp",
+    "userName": "Kimberly Smith",
+    "type": "commented on your picture",
+    "event": "",
+    "date": "1 week ago",
+    "privateMessage": "",
+    "otherPicture": "./src/assets/images/image-chess.webp"
+  },
+  {
+    "profileImage": "./src/assets/images/avatar-nathan-peterson.webp",
+    "userName": "Nathan Peterson",
+    "type": "reacted to your recent post",
+    "event": "5 end-game strategies to increase your win rate",
+    "date": "2 weeks ago",
+    "privateMessage": "",
+    "otherPicture": ""
+  },
+  {
+    "profileImage": "./src/assets/images/avatar-anna-kim.webp",
+    "userName": "Anna Kim",
+    "type": "left the group",
+    "event": "Chess Club",
+    "date": "2 weeks ago",
+    "privateMessage": "",
+    "otherPicture": ""
+  }
+]

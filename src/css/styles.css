@@ -218,6 +218,8 @@ h6 {
 /***************
   COMPOSITIONS 
 ***************/
+
+/* horizontal centering */
 .center {
   --measure: 730px;
 
@@ -227,6 +229,21 @@ h6 {
 
   /* In order to push the footer to the bottom, the header was squished, this is a fix for that */
   min-width: min(var(--measure), calc(100% - 32px));
+}
+
+/* vertical spacing */
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stack > * {
+  margin-block: 0;
+}
+
+.stack > * + * {
+  margin-block-start: var(--space, 0.625rem);
 }
 
 /***************
@@ -342,6 +359,19 @@ h6 {
 .card.reaction .text-wrapper {
   font-size: 0.875rem;
   position: relative;
+}
+
+.card.reaction .text-wrapper p::before {
+  content: 'Unread Message.';
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 .card.reaction .text-wrapper p::after {

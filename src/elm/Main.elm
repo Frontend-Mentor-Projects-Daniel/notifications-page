@@ -38,7 +38,7 @@ type alias Model =
 init : Model
 init =
     { hasRead = True
-    , unReadMessages = 5
+    , unReadMessages = 0
     , isPrivateMessage = False
     , isComment = False
     , notifications = 0
@@ -75,22 +75,8 @@ view model =
                 ]
             , button [ onClick MarkAllAsRead ] [ text "Mark all as read" ]
             ]
-        , main_ [ class "main center" ]
-            [ div [ class "card reaction" ]
-                [ div [ class "image-wrapper" ]
-                    [ img [ src "./src/assets/images/avatar-mark-webber.webp", alt "profile image", Html.Attributes.height 45, Html.Attributes.width 45 ] []
-                    ]
-                , div [ class "text-wrapper" ]
-                    [ p []
-                        [ span [ class "username" ] [ text "Mark Webber " ]
-                        , text "reacted to your recent post "
-                        , span [ class "event" ] [ text "My first tournament today!" ]
-                        ]
-
-                    -- , div [ class "red-dot" ] []
-                    , time [ datetime "2022 09 23" ] [ text "1m ago" ]
-                    ]
-                ]
+        , main_ [ class "main center stack" ]
+            [ cardReactionTemplate {}
 
             -- , div [ class "card private-message" ] []
             -- , div [ class "card comment" ] []
@@ -100,6 +86,27 @@ view model =
             , a [ href "https://www.frontendmentor.io?ref=challenge", Html.Attributes.target "_blank" ] [ text " Frontend Mentor. " ]
             , text "Coded by "
             , a [ href "#" ] [ text "Daniel Arzanipour" ]
+            ]
+        ]
+
+
+
+-- FUNCTIONS
+-- .card.reaction template
+
+
+cardReactionTemplate obj =
+    div [ class "card reaction" ]
+        [ div [ class "image-wrapper" ]
+            [ img [ src "./src/assets/images/avatar-mark-webber.webp", alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            ]
+        , div [ class "text-wrapper" ]
+            [ p []
+                [ span [ class "username" ] [ text "Mark Webber " ]
+                , text "reacted to your recent post "
+                , span [ class "event" ] [ text "My first tournament today!" ]
+                ]
+            , time [ datetime "2022 09 23" ] [ text "1m ago" ]
             ]
         ]
 
