@@ -264,6 +264,10 @@ h6 {
   display: none;
 }
 
+.bg-transparent {
+  background-color: transparent;
+}
+
 /***************
     BLOCKS 
 ***************/
@@ -416,10 +420,6 @@ h6 {
 }
 
 /* private-message card */
-.card.private-message {
-  background-color: transparent;
-}
-
 .card.private-message .message {
   --clr-blue: calc(var(--hue) + 218), calc(var(--saturation) - 0%),
     calc(var(--lightness) - 0%);
@@ -430,6 +430,12 @@ h6 {
   margin-block-start: 13px;
   padding: 20px;
   padding-block-start: 17px;
+}
+
+/* comment card */
+.card.comment .other-image {
+  flex-shrink: 0;
+  margin-inline-start: auto;
 }
 
 @media (min-width: 34.375rem) {

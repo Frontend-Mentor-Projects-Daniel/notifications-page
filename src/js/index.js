@@ -6225,6 +6225,101 @@ var $elm$html$Html$Attributes$width = function (n) {
 		'width',
 		$elm$core$String$fromInt(n));
 };
+var $author$project$Main$cardCommentTemplate = function (card) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('card comment')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('image-wrapper')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src('./src/assets/images/avatar-kimberly-smith.webp'),
+								$elm$html$Html$Attributes$alt('user profile'),
+								$elm$html$Html$Attributes$height(45),
+								$elm$html$Html$Attributes$width(45)
+							]),
+						_List_Nil)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('text-wrapper')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('username')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Kimberly Smith ')
+									])),
+								$elm$html$Html$text('commented on your picture'),
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('event')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('')
+									]))
+							])),
+						A2(
+						$elm$html$Html$time,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$datetime('1994 09 23')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('1 week ago')
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('other-image')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src('./src/assets/images/image-chess.webp'),
+								$elm$html$Html$Attributes$alt(''),
+								$elm$html$Html$Attributes$height(45),
+								$elm$html$Html$Attributes$width(45)
+							]),
+						_List_Nil)
+					]))
+			]));
+};
 var $author$project$Main$cardPrivateMessage = function (card) {
 	return A2(
 		$elm$html$Html$div,
@@ -6388,7 +6483,7 @@ var $author$project$Main$cardReactionTemplate = function (card) {
 			]));
 };
 var $author$project$Main$cardTemplates = function (card) {
-	return $elm$core$String$isEmpty(card.privateMessage) ? $author$project$Main$cardReactionTemplate(card) : $author$project$Main$cardPrivateMessage(card);
+	return (!$elm$core$String$isEmpty(card.otherPicture)) ? $author$project$Main$cardCommentTemplate(card) : ($elm$core$String$isEmpty(card.privateMessage) ? $author$project$Main$cardReactionTemplate(card) : $author$project$Main$cardPrivateMessage(card));
 };
 var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');

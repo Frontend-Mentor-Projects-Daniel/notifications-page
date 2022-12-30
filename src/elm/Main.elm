@@ -109,10 +109,9 @@ view model =
                 Success notification ->
                     div [ class "cards" ] (List.map (\aNotification -> cardTemplates aNotification) notification)
 
+                -- div [ class "cards" ] (List.map (\aNotification -> cardCommentTemplate aNotification) notification)
                 Failure ->
                     p [] [ text "Failure" ]
-
-            -- , div [ class "card comment" ] []
             ]
         , footer [ class "footer attribution center" ]
             [ text "Challenge by"
@@ -162,7 +161,10 @@ type alias Card =
 
 cardTemplates : Card -> Html msg
 cardTemplates card =
-    if String.isEmpty card.privateMessage == True then
+    if String.isEmpty card.otherPicture == False then
+        cardCommentTemplate card
+
+    else if String.isEmpty card.privateMessage == True then
         cardReactionTemplate card
 
     else
@@ -213,13 +215,21 @@ printPrivateMessage msg =
         p [ class "message" ] [ text msg ]
 
 
-
---  {
---     "profileImage": "./src/assets/images/avatar-rizky-hasanuddin.webp",
---     "userName": "Rizky Hasanuddin",
---     "type_": "sent you a private message",
---     "event": "",
---     "date": "1m ago",
---     "privateMessage": "Hello, thanks for setting up the Chess Club. I’ve been a member for a ,few weeks now and I’m already having lots of fun and improving my game.",
---     "otherPicture": ""
---   },
+cardCommentTemplate : Card -> Html msg
+cardCommentTemplate card =
+    div [ class "card comment" ]
+        [ div [ class "image-wrapper" ]
+            [ img [ src "./src/assets/images/avatar-kimberly-smith.webp", alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            ]
+        , div [ class "text-wrapper" ]
+            [ p []
+                [ span [ class "username" ] [ text "Kimberly Smith " ]
+                , text "commented on your picture"
+                , span [ class "event" ] [ text "" ]
+                ]
+            , time [ datetime "1994 09 23" ] [ text "1 week ago" ]
+            ]
+        , div [ class "other-image" ]
+            [ img [ src "./src/assets/images/image-chess.webp", alt "", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            ]
+        ]
