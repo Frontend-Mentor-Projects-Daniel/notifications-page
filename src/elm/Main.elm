@@ -1,48 +1,63 @@
 module Main exposing (..)
 
--- import Css exposing (..)
--- import Css.Global exposing (media)
--- import Css.Media
--- import Html.Styled exposing (..)
--- import Html.Styled.Attributes exposing (..)
--- import Html.Styled.Attributes.Aria exposing (..)
--- import Html.Styled.Events exposing (onClick, onInput, onSubmit)
--- import Svg.Styled.Attributes exposing (textAnchor)
-
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (alt, class, datetime, href, id, src)
 import Html.Attributes.Aria exposing (ariaDescribedby, ariaLive, role)
 import Html.Events exposing (onClick)
+import Http
+import Json.Decode as JD exposing (Decoder, field, int, map7, string)
 
 
 main : Program () Model Msg
 main =
-    Browser.sandbox { init = init, update = update, view = view }
+    Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
 
 
 
--- Browser.sandbox { init = init, update = update, view = view >> Html.Styled.toUnstyled }
 -- MODEL
 
 
-type alias Model =
-    { hasRead : Bool
-    , unReadMessages : Int
-    , isPrivateMessage : Bool
-    , isComment : Bool
-    , notifications : Int
+type Model
+    = Loading
+    | Success (List Notification)
+    | Failure
+
+
+type alias Notification =
+    { profileImage : String
+    , userName : String
+    , type_ : String
+    , event : String
+    , date : String
+    , privateMessage : String
+    , otherPicture : String
     }
 
 
-init : Model
-init =
-    { hasRead = True
-    , unReadMessages = 5
-    , isPrivateMessage = False
-    , isComment = False
-    , notifications = 0
-    }
+
+-- { hasRead = True
+--       , unReadMessages = 5
+--       , isPrivateMessage = False
+--       , isComment = False
+--       , notifications = 0
+--       }
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Loading
+    , getNotifications
+    )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 
@@ -50,14 +65,23 @@ init =
 
 
 type Msg
-    = MarkAllAsRead
+    = GetNotifications (Result Http.Error (List Notification))
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        MarkAllAsRead ->
-            { model | unReadMessages = 0 }
+        GetNotifications result ->
+            case result of
+                Ok notification ->
+                    ( Success notification, Cmd.none )
+
+                Err httpError ->
+                    let
+                        _ =
+                            Debug.log "HTTP error" httpError
+                    in
+                    ( Failure, Cmd.none )
 
 
 
@@ -67,16 +91,25 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [ id "root" ]
-        [ header [ class "header center" ]
+        [ -- h1 [] [ text (Debug.toString testDecoder) ],
+          header [ class "header center" ]
             [ h1 [] [ text "Notifications" ]
             , span [ role "status", ariaLive "polite" ]
-                [ text (String.fromInt model.unReadMessages)
+                [ text "0"
                 , span [ class "sr-only" ] [ text " new notifications" ]
                 ]
-            , button [ onClick MarkAllAsRead ] [ text "Mark all as read" ]
+            , button [] [ text "Mark all as read" ]
             ]
         , main_ [ class "main center stack" ]
-            [ cardReactionTemplate tempData
+            [ case model of
+                Loading ->
+                    p [] [ text "Loading..." ]
+
+                Success notification ->
+                    div [ class "cards" ] (List.map (\aNotification -> cardReactionTemplate aNotification) notification)
+
+                Failure ->
+                    p [] [ text "Failure" ]
 
             -- , div [ class "card private-message" ] []
             -- , div [ class "card comment" ] []
@@ -92,18 +125,28 @@ view model =
 
 
 -- FUNCTIONS
--- .card.reaction template
 
 
-tempData =
-    { profileImage = "./src/assets/images/avatar-mark-webber.webp"
-    , userName = "Mark Webber"
-    , type_ = "reacted to your recent post"
-    , event = "My first tournament today"
-    , date = "1m ago"
-    , privateMessage = ""
-    , otherPicture = ""
-    }
+getNotifications : Cmd Msg
+getNotifications =
+    Http.get { url = "./src/data/data.json", expect = Http.expectJson GetNotifications notificationsListDecoder }
+
+
+notificationsDecoder : Decoder Notification
+notificationsDecoder =
+    JD.map7 Notification
+        (field "profileImage" string)
+        (field "userName" string)
+        (field "type_" string)
+        (field "event" string)
+        (field "date" string)
+        (field "privateMessage" string)
+        (field "otherPicture" string)
+
+
+notificationsListDecoder : Decoder (List Notification)
+notificationsListDecoder =
+    JD.list notificationsDecoder
 
 
 type alias ReactionCard =
@@ -132,89 +175,3 @@ cardReactionTemplate card =
             , time [ datetime "1994 09 23" ] [ text card.date ]
             ]
         ]
-
-
-
--- CSS
---! I tried using elm-css but I didn't like it
--- type alias CssRule =
---     List Style
--- createCss : List { a | val : b } -> List b
--- createCss styles =
---     List.map (\prop -> prop.val) styles
--- pxToRem : Float -> Float
--- pxToRem px =
---     px / 16
--- -- ROOT COMPONENT
--- rootComponent : CssRule
--- rootComponent =
---     let
---         props =
---             [ { val = displayFlex }
---             , { val = flexDirection column }
---             ]
---     in
---     createCss props
--- -- HEADER COMPONENT
--- headerComponent : CssRule
--- headerComponent =
---     let
---         props =
---             [ { val = displayFlex }
---             , { val = padding2 (px 0) (px 16) }
---             , { val = marginBlockStart (px 24) }
---             -- , { val = hover [ backgroundColor (hex "#fefefe") ] }
---             ]
---     in
---     createCss props
--- notifications : CssRule
--- notifications =
---     let
---         props =
---             [ { val = fontSize (rem (pxToRem 20)) }
---             ]
---     in
---     createCss props
--- notificationsNumber : CssRule
--- notificationsNumber =
---     let
---         props =
---             [ { val = color (hex "#FFFFFF") }
---             , { val = backgroundColor (hex "#0A327B") }
---             , { val = fontSize (rem (pxToRem 16)) }
---             , { val = fontWeight (int 800) }
---             , { val = padding4 (px 4) (px 11) (px 4) (px 11) }
---             , { val = borderRadius (px 6) }
---             ]
---     in
---     createCss props
--- markAsReadBtn : CssRule
--- markAsReadBtn =
---     let
---         props =
---             [ { val = color (hex "#5E6778") }
---             , { val = backgroundColor transparent }
---             , { val = border zero }
---             , { val = cursor pointer }
---             , { val = marginInlineStart auto }
---             ]
---     in
---     createCss props
--- -- MAIN COMPONENT
--- -- mainComponent : CssRule
--- -- mainComponent =
--- --     let
--- --         props =
--- --             [ { val = }
--- --             ]
--- --     in
--- --     createCss props
--- -- FOOTER COMPONENT
--- footerComponent : CssRule
--- footerComponent =
---     let
---         props =
---             [ { val = marginBlockStart auto }
---             ]
---     in
---     createCss props

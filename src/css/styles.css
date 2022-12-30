@@ -340,6 +340,11 @@ h6 {
 }
 
 /* CARDS */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 /* reaction card */
 .card.reaction {
@@ -376,7 +381,7 @@ h6 {
 
 .card.reaction .text-wrapper p::after {
   position: absolute;
-  transform: translate(75%, 85%);
+  transform: translate(75%, 115%);
 
   content: '';
   background-color: hsl(var(--clr-red));
