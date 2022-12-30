@@ -7,6 +7,7 @@ import Html.Attributes.Aria exposing (ariaDescribedby, ariaLive, role)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as JD exposing (Decoder, field, int, map7, string)
+import List exposing (isEmpty)
 
 
 main : Program () Model Msg
@@ -106,12 +107,11 @@ view model =
                     p [] [ text "Loading..." ]
 
                 Success notification ->
-                    div [ class "cards" ] (List.map (\aNotification -> cardReactionTemplate aNotification) notification)
+                    div [ class "cards" ] (List.map (\aNotification -> cardTemplates aNotification) notification)
 
                 Failure ->
                     p [] [ text "Failure" ]
 
-            -- , div [ class "card private-message" ] []
             -- , div [ class "card comment" ] []
             ]
         , footer [ class "footer attribution center" ]
@@ -149,7 +149,7 @@ notificationsListDecoder =
     JD.list notificationsDecoder
 
 
-type alias ReactionCard =
+type alias Card =
     { profileImage : String
     , userName : String
     , type_ : String
@@ -160,7 +160,16 @@ type alias ReactionCard =
     }
 
 
-cardReactionTemplate : ReactionCard -> Html msg
+cardTemplates : Card -> Html msg
+cardTemplates card =
+    if String.isEmpty card.privateMessage == True then
+        cardReactionTemplate card
+
+    else
+        cardPrivateMessage card
+
+
+cardReactionTemplate : Card -> Html msg
 cardReactionTemplate card =
     div [ class "card reaction" ]
         [ div [ class "image-wrapper" ]
@@ -175,3 +184,42 @@ cardReactionTemplate card =
             , time [ datetime "1994 09 23" ] [ text card.date ]
             ]
         ]
+
+
+cardPrivateMessage : Card -> Html msg
+cardPrivateMessage card =
+    div [ class "card private-message" ]
+        [ div [ class "image-wrapper" ]
+            [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            ]
+        , div [ class "text-wrapper" ]
+            [ p []
+                [ span [ class "username" ] [ text (card.userName ++ " ") ]
+                , text card.type_
+                , span [ class "event" ] [ text card.event ]
+                ]
+            , time [ datetime "1994 09 23" ] [ text card.date ]
+            , p [ class "message" ] [ text card.privateMessage ]
+            ]
+        ]
+
+
+printPrivateMessage : String -> Html msg
+printPrivateMessage msg =
+    if String.isEmpty msg then
+        p [ class "d-none" ] []
+
+    else
+        p [ class "message" ] [ text msg ]
+
+
+
+--  {
+--     "profileImage": "./src/assets/images/avatar-rizky-hasanuddin.webp",
+--     "userName": "Rizky Hasanuddin",
+--     "type_": "sent you a private message",
+--     "event": "",
+--     "date": "1m ago",
+--     "privateMessage": "Hello, thanks for setting up the Chess Club. I’ve been a member for a ,few weeks now and I’m already having lots of fun and improving my game.",
+--     "otherPicture": ""
+--   },

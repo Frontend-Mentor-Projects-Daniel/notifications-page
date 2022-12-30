@@ -6225,6 +6225,92 @@ var $elm$html$Html$Attributes$width = function (n) {
 		'width',
 		$elm$core$String$fromInt(n));
 };
+var $author$project$Main$cardPrivateMessage = function (card) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('card private-message')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('image-wrapper')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src(card.profileImage),
+								$elm$html$Html$Attributes$alt('user profile'),
+								$elm$html$Html$Attributes$height(45),
+								$elm$html$Html$Attributes$width(45)
+							]),
+						_List_Nil)
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('text-wrapper')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('username')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(card.userName + ' ')
+									])),
+								$elm$html$Html$text(card.type_),
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('event')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(card.event)
+									]))
+							])),
+						A2(
+						$elm$html$Html$time,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$datetime('1994 09 23')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(card.date)
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('message')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(card.privateMessage)
+							]))
+					]))
+			]));
+};
 var $author$project$Main$cardReactionTemplate = function (card) {
 	return A2(
 		$elm$html$Html$div,
@@ -6300,6 +6386,9 @@ var $author$project$Main$cardReactionTemplate = function (card) {
 							]))
 					]))
 			]));
+};
+var $author$project$Main$cardTemplates = function (card) {
+	return $elm$core$String$isEmpty(card.privateMessage) ? $author$project$Main$cardReactionTemplate(card) : $author$project$Main$cardPrivateMessage(card);
 };
 var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
@@ -6396,7 +6485,7 @@ var $author$project$Main$view = function (model) {
 									A2(
 										$elm$core$List$map,
 										function (aNotification) {
-											return $author$project$Main$cardReactionTemplate(aNotification);
+											return $author$project$Main$cardTemplates(aNotification);
 										},
 										notification));
 							default:

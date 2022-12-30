@@ -162,7 +162,6 @@ h6 {
 *****************/
 :root {
   /* COLOURS */
-  /* color: hsl(hue, saturation, lightness); */
   --hue: 1;
   --saturation: 90%;
   --lightness: 64%;
@@ -261,6 +260,10 @@ h6 {
   border: 0 !important;
 }
 
+.d-none {
+  display: none;
+}
+
 /***************
     BLOCKS 
 ***************/
@@ -346,8 +349,8 @@ h6 {
   gap: 8px;
 }
 
-/* reaction card */
-.card.reaction {
+/* card */
+.card {
   display: flex;
   gap: 13px;
 
@@ -357,16 +360,16 @@ h6 {
   padding-inline-end: 24px;
 }
 
-.card.reaction .image-wrapper {
+.card .image-wrapper {
   flex-shrink: 0;
 }
 
-.card.reaction .text-wrapper {
+.card .text-wrapper {
   font-size: 0.875rem;
   position: relative;
 }
 
-.card.reaction .text-wrapper p::before {
+.card .text-wrapper p:first-of-type:before {
   content: 'Unread Message.';
   position: absolute !important;
   width: 1px !important;
@@ -379,7 +382,7 @@ h6 {
   border: 0 !important;
 }
 
-.card.reaction .text-wrapper p::after {
+.card .text-wrapper p:first-of-type:after {
   position: absolute;
   transform: translate(75%, 115%);
 
@@ -390,41 +393,54 @@ h6 {
   width: 8px;
 }
 
-.card.reaction .username {
+.card .username {
   color: hsl(var(--clr-grayish-blue-900));
   font-weight: var(--fw-very-bold);
 }
 
-.card.reaction .event {
+.card .event {
   color: hsl(var(--clr-grayish-blue-700));
   font-weight: var(--fw-bold);
   margin-inline-start: 3px;
 }
 
-.card.reaction .red-dot {
+.card .red-dot {
   background-color: hsl(var(--clr-red));
   border-radius: 50%;
   height: 8px;
   width: 8px;
 }
 
-.card.reaction time {
+.card time {
   color: hsl(var(--clr-grayish-blue-600), 0.95);
 }
 
+/* private-message card */
+.card.private-message {
+  background-color: transparent;
+}
+
+.card.private-message .message {
+  --clr-blue: calc(var(--hue) + 218), calc(var(--saturation) - 0%),
+    calc(var(--lightness) - 0%);
+
+  background-color: hsl(var(--clr-blue), 0.25);
+  border-radius: 5px;
+  color: hsl(var(--clr-grayish-blue-700));
+  margin-block-start: 13px;
+  padding: 20px;
+  padding-block-start: 17px;
+}
+
 @media (min-width: 34.375rem) {
-  .card.reaction {
+  .card {
     gap: 19px;
   }
 
-  .card.reaction .text-wrapper {
+  .card .text-wrapper {
     font-size: 1rem;
   }
 }
-
-/* private message card */
-
-/* comment card */
 
 /* FOOTER */
 .footer {
