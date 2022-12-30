@@ -6156,7 +6156,7 @@ var $author$project$Main$init = function (_v0) {
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (model) {
+var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Main$Failure = {$: 'Failure'};
@@ -6168,40 +6168,33 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		switch (msg.$) {
-			case 'GetNotifications':
-				var result = msg.a;
-				if (result.$ === 'Ok') {
-					var notification = result.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								status: $author$project$Main$Success(notification),
-								unreadNotifications: $elm$core$List$length(notification)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					var httpError = result.a;
-					var _v2 = A2($elm$core$Debug$log, 'HTTP error', httpError);
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{status: $author$project$Main$Failure}),
-						$elm$core$Platform$Cmd$none);
-				}
-			case 'MarkAllAsRead':
+		if (msg.$ === 'GetNotifications') {
+			var result = msg.a;
+			if (result.$ === 'Ok') {
+				var notification = result.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{isRead: true, unreadNotifications: 0}),
+						{
+							status: $author$project$Main$Success(notification),
+							unreadNotifications: $elm$core$List$length(notification)
+						}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			} else {
+				var httpError = result.a;
+				var _v2 = A2($elm$core$Debug$log, 'HTTP error', httpError);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{isRead: true, unreadNotifications: model.unreadNotifications - 1}),
+						{status: $author$project$Main$Failure}),
 					$elm$core$Platform$Cmd$none);
+			}
+		} else {
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{isRead: true, unreadNotifications: 0}),
+				$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$MarkAllAsRead = {$: 'MarkAllAsRead'};
@@ -6216,7 +6209,6 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $fapian$elm_html_aria$Html$Attributes$Aria$ariaLive = $elm$html$Html$Attributes$attribute('aria-live');
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $author$project$Main$MarkAsRead = {$: 'MarkAsRead'};
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6238,23 +6230,6 @@ var $elm$html$Html$Attributes$height = function (n) {
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $author$project$Main$isRead = function (a) {
 	return a ? 'true' : 'false';
-};
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$span = _VirtualDom_node('span');
@@ -6283,8 +6258,7 @@ var $author$project$Main$cardCommentTemplate = F2(
 					A2(
 					$elm$html$Html$Attributes$attribute,
 					'isRead',
-					$author$project$Main$isRead(model.isRead)),
-					$elm$html$Html$Events$onClick($author$project$Main$MarkAsRead)
+					$author$project$Main$isRead(model.isRead))
 				]),
 			_List_fromArray(
 				[
@@ -6384,8 +6358,7 @@ var $author$project$Main$cardPrivateMessage = F2(
 					A2(
 					$elm$html$Html$Attributes$attribute,
 					'isRead',
-					$author$project$Main$isRead(model.isRead)),
-					$elm$html$Html$Events$onClick($author$project$Main$MarkAsRead)
+					$author$project$Main$isRead(model.isRead))
 				]),
 			_List_fromArray(
 				[
@@ -6476,8 +6449,7 @@ var $author$project$Main$cardReactionTemplate = F2(
 					A2(
 					$elm$html$Html$Attributes$attribute,
 					'isRead',
-					$author$project$Main$isRead(model.isRead)),
-					$elm$html$Html$Events$onClick($author$project$Main$MarkAsRead)
+					$author$project$Main$isRead(model.isRead))
 				]),
 			_List_fromArray(
 				[
@@ -6563,6 +6535,23 @@ var $elm$html$Html$Attributes$href = function (url) {
 };
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $fapian$elm_html_aria$Html$Attributes$Aria$role = $elm$html$Html$Attributes$attribute('role');
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $author$project$Main$view = function (model) {

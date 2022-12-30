@@ -1,14 +1,12 @@
 module Main exposing (..)
 
 import Browser
-import Css exposing (static)
 import Html exposing (..)
 import Html.Attributes exposing (alt, attribute, class, datetime, href, id, src)
-import Html.Attributes.Aria exposing (ariaDescribedby, ariaLive, role)
+import Html.Attributes.Aria exposing (ariaLive, role)
 import Html.Events exposing (onClick)
 import Http
-import Json.Decode as JD exposing (Decoder, bool, field, int, map7, string)
-import List exposing (isEmpty, length)
+import Json.Decode as JD exposing (Decoder, field, string)
 
 
 main : Program () Model Msg
@@ -17,7 +15,7 @@ main =
 
 
 
--- MODEL
+--* MODEL
 
 
 type alias Model =
@@ -55,22 +53,21 @@ init _ =
 
 
 
--- SUBSCRIPTIONS
+--* SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
 
--- UPDATE
+--* UPDATE
 
 
 type Msg
     = GetNotifications (Result Http.Error (List Notification))
     | MarkAllAsRead
-    | MarkAsRead
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -91,12 +88,9 @@ update msg model =
         MarkAllAsRead ->
             ( { model | unreadNotifications = 0, isRead = True }, Cmd.none )
 
-        MarkAsRead ->
-            ( { model | unreadNotifications = model.unreadNotifications - 1, isRead = True }, Cmd.none )
 
 
-
--- VIEW
+--* VIEW
 
 
 view : Model -> Html Msg
@@ -131,12 +125,16 @@ view model =
 
 
 
---* DECODING JSON
+--* HTTP REQUESTS
 
 
 getNotifications : Cmd Msg
 getNotifications =
     Http.get { url = "./src/data/data.json", expect = Http.expectJson GetNotifications notificationsListDecoder }
+
+
+
+--* DECODING JSON
 
 
 notificationsDecoder : Decoder Notification
@@ -194,7 +192,7 @@ isRead a =
 
 cardReactionTemplate : Card -> Model -> Html Msg
 cardReactionTemplate card model =
-    div [ class "card reaction", attribute "isRead" (isRead model.isRead), onClick MarkAsRead ]
+    div [ class "card reaction", attribute "isRead" (isRead model.isRead) ]
         [ div [ class "image-wrapper" ]
             [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
@@ -211,7 +209,7 @@ cardReactionTemplate card model =
 
 cardPrivateMessage : Card -> Model -> Html Msg
 cardPrivateMessage card model =
-    div [ class "card private-message", attribute "isRead" (isRead model.isRead), onClick MarkAsRead ]
+    div [ class "card private-message", attribute "isRead" (isRead model.isRead) ]
         [ div [ class "image-wrapper" ]
             [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
@@ -238,7 +236,7 @@ printPrivateMessage msg =
 
 cardCommentTemplate : Card -> Model -> Html Msg
 cardCommentTemplate card model =
-    div [ class "card comment", attribute "isRead" (isRead model.isRead), onClick MarkAsRead ]
+    div [ class "card comment", attribute "isRead" (isRead model.isRead) ]
         [ div [ class "image-wrapper" ]
             [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
