@@ -6150,7 +6150,9 @@ var $author$project$Main$getNotifications = $elm$http$Http$get(
 		url: './src/data/data.json'
 	});
 var $author$project$Main$init = function (_v0) {
-	return _Utils_Tuple2($author$project$Main$Loading, $author$project$Main$getNotifications);
+	return _Utils_Tuple2(
+		{isRead: false, status: $author$project$Main$Loading, unreadNotifications: 0},
+		$author$project$Main$getNotifications);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
@@ -6166,18 +6168,43 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var result = msg.a;
-		if (result.$ === 'Ok') {
-			var notification = result.a;
-			return _Utils_Tuple2(
-				$author$project$Main$Success(notification),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			var httpError = result.a;
-			var _v2 = A2($elm$core$Debug$log, 'HTTP error', httpError);
-			return _Utils_Tuple2($author$project$Main$Failure, $elm$core$Platform$Cmd$none);
+		switch (msg.$) {
+			case 'GetNotifications':
+				var result = msg.a;
+				if (result.$ === 'Ok') {
+					var notification = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								status: $author$project$Main$Success(notification),
+								unreadNotifications: $elm$core$List$length(notification)
+							}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var httpError = result.a;
+					var _v2 = A2($elm$core$Debug$log, 'HTTP error', httpError);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{status: $author$project$Main$Failure}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 'MarkAllAsRead':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{isRead: true, unreadNotifications: 0}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{isRead: true, unreadNotifications: model.unreadNotifications - 1}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Main$MarkAllAsRead = {$: 'MarkAllAsRead'};
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
@@ -6189,6 +6216,7 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
 var $fapian$elm_html_aria$Html$Attributes$Aria$ariaLive = $elm$html$Html$Attributes$attribute('aria-live');
 var $elm$html$Html$button = _VirtualDom_node('button');
+var $author$project$Main$MarkAsRead = {$: 'MarkAsRead'};
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6208,6 +6236,26 @@ var $elm$html$Html$Attributes$height = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $elm$html$Html$img = _VirtualDom_node('img');
+var $author$project$Main$isRead = function (a) {
+	return a ? 'true' : 'false';
+};
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$html$Html$Attributes$src = function (url) {
@@ -6225,266 +6273,285 @@ var $elm$html$Html$Attributes$width = function (n) {
 		'width',
 		$elm$core$String$fromInt(n));
 };
-var $author$project$Main$cardCommentTemplate = function (card) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('card comment')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('image-wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$src('./src/assets/images/avatar-kimberly-smith.webp'),
-								$elm$html$Html$Attributes$alt('user profile'),
-								$elm$html$Html$Attributes$height(45),
-								$elm$html$Html$Attributes$width(45)
-							]),
-						_List_Nil)
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('text-wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$p,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$span,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('username')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Kimberly Smith ')
-									])),
-								$elm$html$Html$text('commented on your picture'),
-								A2(
-								$elm$html$Html$span,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('event')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('')
-									]))
-							])),
-						A2(
-						$elm$html$Html$time,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$datetime('1994 09 23')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('1 week ago')
-							]))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('other-image')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$src('./src/assets/images/image-chess.webp'),
-								$elm$html$Html$Attributes$alt(''),
-								$elm$html$Html$Attributes$height(45),
-								$elm$html$Html$Attributes$width(45)
-							]),
-						_List_Nil)
-					]))
-			]));
-};
-var $author$project$Main$cardPrivateMessage = function (card) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('card private-message')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('image-wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$src(card.profileImage),
-								$elm$html$Html$Attributes$alt('user profile'),
-								$elm$html$Html$Attributes$height(45),
-								$elm$html$Html$Attributes$width(45)
-							]),
-						_List_Nil)
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('text-wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$p,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$span,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('username')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(card.userName + ' ')
-									])),
-								$elm$html$Html$text(card.type_),
-								A2(
-								$elm$html$Html$span,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('event')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(card.event)
-									]))
-							])),
-						A2(
-						$elm$html$Html$time,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$datetime('1994 09 23')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(card.date)
-							])),
-						A2(
-						$elm$html$Html$p,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('message')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(card.privateMessage)
-							]))
-					]))
-			]));
-};
-var $author$project$Main$cardReactionTemplate = function (card) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('card reaction')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('image-wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$src(card.profileImage),
-								$elm$html$Html$Attributes$alt('user profile'),
-								$elm$html$Html$Attributes$height(45),
-								$elm$html$Html$Attributes$width(45)
-							]),
-						_List_Nil)
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('text-wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$p,
-						_List_Nil,
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$span,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('username')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(card.userName + ' ')
-									])),
-								$elm$html$Html$text(card.type_ + ' '),
-								A2(
-								$elm$html$Html$span,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('event')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(card.event)
-									]))
-							])),
-						A2(
-						$elm$html$Html$time,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$datetime('1994 09 23')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(card.date)
-							]))
-					]))
-			]));
-};
-var $author$project$Main$cardTemplates = function (card) {
-	return (!$elm$core$String$isEmpty(card.otherPicture)) ? $author$project$Main$cardCommentTemplate(card) : ($elm$core$String$isEmpty(card.privateMessage) ? $author$project$Main$cardReactionTemplate(card) : $author$project$Main$cardPrivateMessage(card));
-};
+var $author$project$Main$cardCommentTemplate = F2(
+	function (card, model) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card comment'),
+					A2(
+					$elm$html$Html$Attributes$attribute,
+					'isRead',
+					$author$project$Main$isRead(model.isRead)),
+					$elm$html$Html$Events$onClick($author$project$Main$MarkAsRead)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('image-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src(card.profileImage),
+									$elm$html$Html$Attributes$alt('user profile'),
+									$elm$html$Html$Attributes$height(45),
+									$elm$html$Html$Attributes$width(45)
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('text-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('username')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(card.userName)
+										])),
+									$elm$html$Html$text(card.type_),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('event')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(card.event)
+										]))
+								])),
+							A2(
+							$elm$html$Html$time,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$datetime('1994 09 23')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('1 week ago')
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('other-image')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src(card.otherPicture),
+									$elm$html$Html$Attributes$alt(''),
+									$elm$html$Html$Attributes$height(45),
+									$elm$html$Html$Attributes$width(45)
+								]),
+							_List_Nil)
+						]))
+				]));
+	});
+var $author$project$Main$cardPrivateMessage = F2(
+	function (card, model) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card private-message'),
+					A2(
+					$elm$html$Html$Attributes$attribute,
+					'isRead',
+					$author$project$Main$isRead(model.isRead)),
+					$elm$html$Html$Events$onClick($author$project$Main$MarkAsRead)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('image-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src(card.profileImage),
+									$elm$html$Html$Attributes$alt('user profile'),
+									$elm$html$Html$Attributes$height(45),
+									$elm$html$Html$Attributes$width(45)
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('text-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('username')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(card.userName + ' ')
+										])),
+									$elm$html$Html$text(card.type_),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('event')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(card.event)
+										]))
+								])),
+							A2(
+							$elm$html$Html$time,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$datetime('1994 09 23')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(card.date)
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('message')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(card.privateMessage)
+								]))
+						]))
+				]));
+	});
+var $author$project$Main$cardReactionTemplate = F2(
+	function (card, model) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('card reaction'),
+					A2(
+					$elm$html$Html$Attributes$attribute,
+					'isRead',
+					$author$project$Main$isRead(model.isRead)),
+					$elm$html$Html$Events$onClick($author$project$Main$MarkAsRead)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('image-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$img,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$src(card.profileImage),
+									$elm$html$Html$Attributes$alt('user profile'),
+									$elm$html$Html$Attributes$height(45),
+									$elm$html$Html$Attributes$width(45)
+								]),
+							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('text-wrapper')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('username')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(card.userName + ' ')
+										])),
+									$elm$html$Html$text(card.type_ + ' '),
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('event')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(card.event)
+										]))
+								])),
+							A2(
+							$elm$html$Html$time,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$datetime('1994 09 23')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(card.date)
+								]))
+						]))
+				]));
+	});
+var $author$project$Main$cardTemplates = F2(
+	function (card, model) {
+		return (!$elm$core$String$isEmpty(card.otherPicture)) ? A2($author$project$Main$cardCommentTemplate, card, model) : ($elm$core$String$isEmpty(card.privateMessage) ? A2($author$project$Main$cardReactionTemplate, card, model) : A2($author$project$Main$cardPrivateMessage, card, model));
+	});
 var $elm$html$Html$footer = _VirtualDom_node('footer');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$header = _VirtualDom_node('header');
@@ -6531,7 +6598,8 @@ var $author$project$Main$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('0'),
+								$elm$html$Html$text(
+								$elm$core$String$fromInt(model.unreadNotifications)),
 								A2(
 								$elm$html$Html$span,
 								_List_fromArray(
@@ -6545,7 +6613,10 @@ var $author$project$Main$view = function (model) {
 							])),
 						A2(
 						$elm$html$Html$button,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onClick($author$project$Main$MarkAllAsRead)
+							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text('Mark all as read')
@@ -6560,7 +6631,8 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						function () {
-						switch (model.$) {
+						var _v0 = model.status;
+						switch (_v0.$) {
 							case 'Loading':
 								return A2(
 									$elm$html$Html$p,
@@ -6570,7 +6642,7 @@ var $author$project$Main$view = function (model) {
 											$elm$html$Html$text('Loading...')
 										]));
 							case 'Success':
-								var notification = model.a;
+								var notification = _v0.a;
 								return A2(
 									$elm$html$Html$div,
 									_List_fromArray(
@@ -6580,7 +6652,7 @@ var $author$project$Main$view = function (model) {
 									A2(
 										$elm$core$List$map,
 										function (aNotification) {
-											return $author$project$Main$cardTemplates(aNotification);
+											return A2($author$project$Main$cardTemplates, aNotification, model);
 										},
 										notification));
 							default:

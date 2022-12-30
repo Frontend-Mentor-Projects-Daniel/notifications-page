@@ -358,8 +358,9 @@ h6 {
   display: flex;
   gap: 13px;
 
-  background-color: hsl(var(--clr-blue), 0.05);
+  background-color: transparent;
   border-radius: 8px;
+  border: none;
   padding: 16px;
   padding-inline-end: 24px;
 }
@@ -373,7 +374,11 @@ h6 {
   position: relative;
 }
 
-.card .text-wrapper p:first-of-type:before {
+.card[isRead='false'] {
+  background-color: hsl(var(--clr-blue), 0.05);
+}
+
+.card[isRead='false'] .text-wrapper p:first-of-type:before {
   content: 'Unread Message.';
   position: absolute !important;
   width: 1px !important;
@@ -386,7 +391,7 @@ h6 {
   border: 0 !important;
 }
 
-.card .text-wrapper p:first-of-type:after {
+.card[isRead='false'] .text-wrapper p:first-of-type:after {
   position: absolute;
   transform: translate(75%, 115%);
 

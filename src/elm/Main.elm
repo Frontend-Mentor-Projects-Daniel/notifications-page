@@ -1,13 +1,14 @@
 module Main exposing (..)
 
 import Browser
+import Css exposing (static)
 import Html exposing (..)
-import Html.Attributes exposing (alt, class, datetime, href, id, src)
+import Html.Attributes exposing (alt, attribute, class, datetime, href, id, src)
 import Html.Attributes.Aria exposing (ariaDescribedby, ariaLive, role)
 import Html.Events exposing (onClick)
 import Http
-import Json.Decode as JD exposing (Decoder, field, int, map7, string)
-import List exposing (isEmpty)
+import Json.Decode as JD exposing (Decoder, bool, field, int, map7, string)
+import List exposing (isEmpty, length)
 
 
 main : Program () Model Msg
@@ -19,7 +20,14 @@ main =
 -- MODEL
 
 
-type Model
+type alias Model =
+    { status : Status
+    , unreadNotifications : Int
+    , isRead : Bool
+    }
+
+
+type Status
     = Loading
     | Success (List Notification)
     | Failure
@@ -36,18 +44,12 @@ type alias Notification =
     }
 
 
-
--- { hasRead = True
---       , unReadMessages = 5
---       , isPrivateMessage = False
---       , isComment = False
---       , notifications = 0
---       }
-
-
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Loading
+    ( { status = Loading
+      , unreadNotifications = 0
+      , isRead = False
+      }
     , getNotifications
     )
 
@@ -67,6 +69,8 @@ subscriptions model =
 
 type Msg
     = GetNotifications (Result Http.Error (List Notification))
+    | MarkAllAsRead
+    | MarkAsRead
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -75,14 +79,20 @@ update msg model =
         GetNotifications result ->
             case result of
                 Ok notification ->
-                    ( Success notification, Cmd.none )
+                    ( { model | status = Success notification, unreadNotifications = List.length notification }, Cmd.none )
 
                 Err httpError ->
                     let
                         _ =
                             Debug.log "HTTP error" httpError
                     in
-                    ( Failure, Cmd.none )
+                    ( { model | status = Failure }, Cmd.none )
+
+        MarkAllAsRead ->
+            ( { model | unreadNotifications = 0, isRead = True }, Cmd.none )
+
+        MarkAsRead ->
+            ( { model | unreadNotifications = model.unreadNotifications - 1, isRead = True }, Cmd.none )
 
 
 
@@ -92,24 +102,22 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [ id "root" ]
-        [ -- h1 [] [ text (Debug.toString testDecoder) ],
-          header [ class "header center" ]
+        [ header [ class "header center" ]
             [ h1 [] [ text "Notifications" ]
             , span [ role "status", ariaLive "polite" ]
-                [ text "0"
+                [ text (String.fromInt model.unreadNotifications)
                 , span [ class "sr-only" ] [ text " new notifications" ]
                 ]
-            , button [] [ text "Mark all as read" ]
+            , button [ onClick MarkAllAsRead ] [ text "Mark all as read" ]
             ]
         , main_ [ class "main center stack" ]
-            [ case model of
+            [ case model.status of
                 Loading ->
                     p [] [ text "Loading..." ]
 
                 Success notification ->
-                    div [ class "cards" ] (List.map (\aNotification -> cardTemplates aNotification) notification)
+                    div [ class "cards" ] (List.map (\aNotification -> cardTemplates aNotification model) notification)
 
-                -- div [ class "cards" ] (List.map (\aNotification -> cardCommentTemplate aNotification) notification)
                 Failure ->
                     p [] [ text "Failure" ]
             ]
@@ -123,7 +131,7 @@ view model =
 
 
 
--- FUNCTIONS
+--* DECODING JSON
 
 
 getNotifications : Cmd Msg
@@ -148,6 +156,10 @@ notificationsListDecoder =
     JD.list notificationsDecoder
 
 
+
+--* CARD TEMPLATES
+
+
 type alias Card =
     { profileImage : String
     , userName : String
@@ -159,21 +171,30 @@ type alias Card =
     }
 
 
-cardTemplates : Card -> Html msg
-cardTemplates card =
+cardTemplates : Card -> Model -> Html Msg
+cardTemplates card model =
     if String.isEmpty card.otherPicture == False then
-        cardCommentTemplate card
+        cardCommentTemplate card model
 
     else if String.isEmpty card.privateMessage == True then
-        cardReactionTemplate card
+        cardReactionTemplate card model
 
     else
-        cardPrivateMessage card
+        cardPrivateMessage card model
 
 
-cardReactionTemplate : Card -> Html msg
-cardReactionTemplate card =
-    div [ class "card reaction" ]
+isRead : Bool -> String
+isRead a =
+    if a == True then
+        "true"
+
+    else
+        "false"
+
+
+cardReactionTemplate : Card -> Model -> Html Msg
+cardReactionTemplate card model =
+    div [ class "card reaction", attribute "isRead" (isRead model.isRead), onClick MarkAsRead ]
         [ div [ class "image-wrapper" ]
             [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
@@ -188,9 +209,9 @@ cardReactionTemplate card =
         ]
 
 
-cardPrivateMessage : Card -> Html msg
-cardPrivateMessage card =
-    div [ class "card private-message" ]
+cardPrivateMessage : Card -> Model -> Html Msg
+cardPrivateMessage card model =
+    div [ class "card private-message", attribute "isRead" (isRead model.isRead), onClick MarkAsRead ]
         [ div [ class "image-wrapper" ]
             [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
@@ -206,7 +227,7 @@ cardPrivateMessage card =
         ]
 
 
-printPrivateMessage : String -> Html msg
+printPrivateMessage : String -> Html Msg
 printPrivateMessage msg =
     if String.isEmpty msg then
         p [ class "d-none" ] []
@@ -215,21 +236,21 @@ printPrivateMessage msg =
         p [ class "message" ] [ text msg ]
 
 
-cardCommentTemplate : Card -> Html msg
-cardCommentTemplate card =
-    div [ class "card comment" ]
+cardCommentTemplate : Card -> Model -> Html Msg
+cardCommentTemplate card model =
+    div [ class "card comment", attribute "isRead" (isRead model.isRead), onClick MarkAsRead ]
         [ div [ class "image-wrapper" ]
-            [ img [ src "./src/assets/images/avatar-kimberly-smith.webp", alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            [ img [ src card.profileImage, alt "user profile", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
         , div [ class "text-wrapper" ]
             [ p []
-                [ span [ class "username" ] [ text "Kimberly Smith " ]
-                , text "commented on your picture"
-                , span [ class "event" ] [ text "" ]
+                [ span [ class "username" ] [ text card.userName ]
+                , text card.type_
+                , span [ class "event" ] [ text card.event ]
                 ]
             , time [ datetime "1994 09 23" ] [ text "1 week ago" ]
             ]
         , div [ class "other-image" ]
-            [ img [ src "./src/assets/images/image-chess.webp", alt "", Html.Attributes.height 45, Html.Attributes.width 45 ] []
+            [ img [ src card.otherPicture, alt "", Html.Attributes.height 45, Html.Attributes.width 45 ] []
             ]
         ]
