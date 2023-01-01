@@ -6,7 +6,8 @@ import Html.Attributes exposing (alt, attribute, class, datetime, href, id, src)
 import Html.Attributes.Aria exposing (ariaLive, role)
 import Html.Events exposing (onClick)
 import Http
-import Json.Decode as JD exposing (Decoder, field, string)
+import Json.Decode as JD exposing (Decoder, field, int, string)
+import Set exposing (..)
 
 
 main : Program () Model Msg
@@ -22,6 +23,7 @@ type alias Model =
     { status : Status
     , unreadNotifications : Int
     , isRead : Bool
+    , clickedNotifications : Set.Set Int
     }
 
 
@@ -32,7 +34,8 @@ type Status
 
 
 type alias Notification =
-    { profileImage : String
+    { id : Int
+    , profileImage : String
     , userName : String
     , type_ : String
     , event : String
@@ -42,11 +45,16 @@ type alias Notification =
     }
 
 
+type NotificationId
+    = Int
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { status = Loading
       , unreadNotifications = 0
       , isRead = False
+      , clickedNotifications = Set.empty
       }
     , getNotifications
     )
@@ -76,7 +84,7 @@ update msg model =
         GetNotifications result ->
             case result of
                 Ok notification ->
-                    ( { model | status = Success notification, unreadNotifications = List.length notification }, Cmd.none )
+                    ( { model | status = Success notification, unreadNotifications = List.length notification, clickedNotifications = Set.fromList (getIds notification) }, Cmd.none )
 
                 Err httpError ->
                     let
@@ -87,6 +95,11 @@ update msg model =
 
         MarkAllAsRead ->
             ( { model | unreadNotifications = 0, isRead = True }, Cmd.none )
+
+
+getIds : List { a | id : b } -> List b
+getIds list =
+    List.map (\el -> el.id) list
 
 
 
@@ -139,7 +152,8 @@ getNotifications =
 
 notificationsDecoder : Decoder Notification
 notificationsDecoder =
-    JD.map7 Notification
+    JD.map8 Notification
+        (field "id" int)
         (field "profileImage" string)
         (field "userName" string)
         (field "type_" string)
@@ -159,7 +173,8 @@ notificationsListDecoder =
 
 
 type alias Card =
-    { profileImage : String
+    { id : Int
+    , profileImage : String
     , userName : String
     , type_ : String
     , event : String
@@ -203,6 +218,8 @@ cardReactionTemplate card model =
                 , span [ class "event" ] [ text card.event ]
                 ]
             , time [ datetime "1994 09 23" ] [ text card.date ]
+
+            -- , p [] [ text (Debug.toString (Set.member 1 card.id)) ]
             ]
         ]
 

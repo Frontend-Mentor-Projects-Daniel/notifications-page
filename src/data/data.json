@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "profileImage": "./src/assets/images/avatar-mark-webber.webp",
     "userName": "Mark Webber",
     "type_": "reacted to your recent post",
@@ -9,6 +10,7 @@
     "otherPicture": ""
   },
   {
+    "id": 2,
     "profileImage": "./src/assets/images/avatar-angela-gray.webp",
     "userName": "Angela Gray",
     "type_": "followed you",
@@ -18,6 +20,7 @@
     "otherPicture": ""
   },
   {
+    "id": 3,
     "profileImage": "./src/assets/images/avatar-jacob-thompson.webp",
     "userName": "Jacob Thompson",
     "type_": "has joined your group",
@@ -27,6 +30,7 @@
     "otherPicture": ""
   },
   {
+    "id": 4,
     "profileImage": "./src/assets/images/avatar-rizky-hasanuddin.webp",
     "userName": "Rizky Hasanuddin",
     "type_": "sent you a private message",
@@ -36,6 +40,7 @@
     "otherPicture": ""
   },
   {
+    "id": 5,
     "profileImage": "./src/assets/images/avatar-kimberly-smith.webp",
     "userName": "Kimberly Smith",
     "type_": "commented on your picture",
@@ -45,6 +50,7 @@
     "otherPicture": "./src/assets/images/image-chess.webp"
   },
   {
+    "id": 6,
     "profileImage": "./src/assets/images/avatar-nathan-peterson.webp",
     "userName": "Nathan Peterson",
     "type_": "reacted to your recent post",
@@ -54,6 +60,7 @@
     "otherPicture": ""
   },
   {
+    "id": 7,
     "profileImage": "./src/assets/images/avatar-anna-kim.webp",
     "userName": "Anna Kim",
     "type_": "left the group",

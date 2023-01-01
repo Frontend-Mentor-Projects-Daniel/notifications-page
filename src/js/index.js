@@ -5335,6 +5335,12 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$Loading = {$: 'Loading'};
+var $elm$core$Set$Set_elm_builtin = function (a) {
+	return {$: 'Set_elm_builtin', a: a};
+};
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $elm$core$Set$empty = $elm$core$Set$Set_elm_builtin($elm$core$Dict$empty);
 var $author$project$Main$GetNotifications = function (a) {
 	return {$: 'GetNotifications', a: a};
 };
@@ -5358,8 +5364,6 @@ var $elm$http$Http$Sending = function (a) {
 	return {$: 'Sending', a: a};
 };
 var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
-var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Maybe$isJust = function (maybe) {
 	if (maybe.$ === 'Just') {
 		return true;
@@ -6126,16 +6130,18 @@ var $elm$http$Http$get = function (r) {
 		{body: $elm$http$Http$emptyBody, expect: r.expect, headers: _List_Nil, method: 'GET', timeout: $elm$core$Maybe$Nothing, tracker: $elm$core$Maybe$Nothing, url: r.url});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
-var $author$project$Main$Notification = F7(
-	function (profileImage, userName, type_, event, date, privateMessage, otherPicture) {
-		return {date: date, event: event, otherPicture: otherPicture, privateMessage: privateMessage, profileImage: profileImage, type_: type_, userName: userName};
+var $author$project$Main$Notification = F8(
+	function (id, profileImage, userName, type_, event, date, privateMessage, otherPicture) {
+		return {date: date, event: event, id: id, otherPicture: otherPicture, privateMessage: privateMessage, profileImage: profileImage, type_: type_, userName: userName};
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$map7 = _Json_map7;
+var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $elm$json$Json$Decode$map8 = _Json_map8;
 var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$notificationsDecoder = A8(
-	$elm$json$Json$Decode$map7,
+var $author$project$Main$notificationsDecoder = A9(
+	$elm$json$Json$Decode$map8,
 	$author$project$Main$Notification,
+	A2($elm$json$Json$Decode$field, 'id', $elm$json$Json$Decode$int),
 	A2($elm$json$Json$Decode$field, 'profileImage', $elm$json$Json$Decode$string),
 	A2($elm$json$Json$Decode$field, 'userName', $elm$json$Json$Decode$string),
 	A2($elm$json$Json$Decode$field, 'type_', $elm$json$Json$Decode$string),
@@ -6151,7 +6157,7 @@ var $author$project$Main$getNotifications = $elm$http$Http$get(
 	});
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{isRead: false, status: $author$project$Main$Loading, unreadNotifications: 0},
+		{clickedNotifications: $elm$core$Set$empty, isRead: false, status: $author$project$Main$Loading, unreadNotifications: 0},
 		$author$project$Main$getNotifications);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -6162,6 +6168,23 @@ var $author$project$Main$subscriptions = function (_v0) {
 var $author$project$Main$Failure = {$: 'Failure'};
 var $author$project$Main$Success = function (a) {
 	return {$: 'Success', a: a};
+};
+var $elm$core$Set$insert = F2(
+	function (key, _v0) {
+		var dict = _v0.a;
+		return $elm$core$Set$Set_elm_builtin(
+			A3($elm$core$Dict$insert, key, _Utils_Tuple0, dict));
+	});
+var $elm$core$Set$fromList = function (list) {
+	return A3($elm$core$List$foldl, $elm$core$Set$insert, $elm$core$Set$empty, list);
+};
+var $author$project$Main$getIds = function (list) {
+	return A2(
+		$elm$core$List$map,
+		function (el) {
+			return el.id;
+		},
+		list);
 };
 var $elm$core$Debug$log = _Debug_log;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
@@ -6176,6 +6199,8 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
+							clickedNotifications: $elm$core$Set$fromList(
+								$author$project$Main$getIds(notification)),
 							status: $author$project$Main$Success(notification),
 							unreadNotifications: $elm$core$List$length(notification)
 						}),
